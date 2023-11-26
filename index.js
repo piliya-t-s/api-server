@@ -7,7 +7,7 @@ import cors from 'cors'
 const packageDef = protoLoader.loadSync("api.proto", {})
 const hostPackage = grpc.loadPackageDefinition(packageDef).hostApi
 
-const client = new hostPackage.Host(process.env.HOST, grpc.credentials.createInsecure())
+const client = new hostPackage.Host("localhost:9000", grpc.credentials.createInsecure())
 
 const app = express()
 app.use(cors())
@@ -15,7 +15,7 @@ app.use(cors())
 app.post('/room/', function(req, res) {
     let id = Date.now().toString().slice(-5)
 
-    
+
     client.createRoom({
         "id": id,
         "secret": "test",
@@ -30,7 +30,7 @@ app.post('/room/', function(req, res) {
 })
 
 
-app.listen(80, () => {
+app.listen(802, () => {
     console.log(`Example app listening on port ${80}`)
 })
   
