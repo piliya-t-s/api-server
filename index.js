@@ -1,6 +1,13 @@
 import express from 'express'
-import client from './client.js'
-import e from 'express';
+import 'dotenv/config'
+import grpc from '@grpc/grpc-js'
+import protoLoader from '@grpc/proto-loader'
+
+
+const packageDef = protoLoader.loadSync("api.proto", {})
+const hostPackage = grpc.loadPackageDefinition(packageDef).hostApi
+
+const client = new hostPackage.Host(process.env.HOST, grpc.credentials.createInsecure())
 
 const app = express()
 
@@ -8,7 +15,7 @@ app.post('/room/', function(req, res) {
     let id = Date.now().toString().slice(-5)
 
     client.createRoom({
-        "id": "123",
+        "id": id,
         "secret": "test",
         "isPublic": true
     }, (err, response) => {
@@ -21,4 +28,8 @@ app.post('/room/', function(req, res) {
 })
 
 
+app.listen(80, () => {
+    console.log(`Example app listening on port ${80}`)
+})
+  
 
