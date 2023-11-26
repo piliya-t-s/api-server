@@ -21,7 +21,7 @@ app.post('/room/', function(req, res) {
         "isPublic": true
     }, (err, response) => {
         if(!err){
-            res.json({"link": `https://api.mtsound.ru/room/${response.id}`})
+            res.json({"id": response.id})
         } else {
             res.send(JSON.stringify(err))
         }
